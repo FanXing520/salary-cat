@@ -1,37 +1,182 @@
-# salary-cat
+# Salary Cat (Yuexin Miao)
 
-#### 介绍
-月薪猫
+# 我真的特别爱你 月薪喵 小猫 月薪猫
+It renders `cat.gif` / `cat.GIF` in the terminal, loops the animation, and plays
+`music.mp3` when available.
 
-#### 软件架构
-软件架构说明
+## Download without Python
 
+Users do not need to install Python if they download the standalone binaries
+from GitHub Releases:
 
-#### 安装教程
+[https://github.com/Einswen/SalaryCat/releases/]
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+### macOS
 
-#### 使用说明
+1. Download one file from the latest release:
+   - Apple Silicon Macs: `tban-cat-macos-arm64`
+   - Intel Macs: `tban-cat-macos-intel`
+2. Open Terminal in the download folder.
+3. Rename it or run it directly. Example for Apple Silicon:
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+```bash
+chmod +x ./tban-cat-macos-arm64
+./tban-cat-macos-arm64
+```
 
-#### 参与贡献
+If macOS Gatekeeper blocks it, run:
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+```bash
+xattr -d com.apple.quarantine ./tban-cat-macos-arm64
+./tban-cat-macos-arm64
+```
 
+### Windows
 
-#### 特技
+1. Download `tban-cat-windows.exe` from the latest release.
+2. Open Windows Terminal or PowerShell in the download folder.
+3. Run:
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+```powershell
+.\tban-cat-windows.exe
+```
+
+If Windows SmartScreen warns about an unknown app, choose "More info" and then
+"Run anyway".
+
+The standalone binaries include the bundled `cat.GIF` and `music.mp3`. You can
+still place your own `cat.gif` and `music.mp3` in the same folder to override
+them.
+
+## Requirements for Python install
+
+- Python 3.10+
+- A modern terminal with ANSI TrueColor support:
+  - macOS Terminal
+  - iTerm2
+  - Windows Terminal
+  - modern Linux terminals
+
+Python dependency:
+
+- Pillow
+
+Audio playback uses system tools:
+
+- macOS: `afplay`
+- Windows: PowerShell MediaPlayer
+- Linux: one of `ffplay`, `mpv`, `mpg123`, `cvlc`, or `play`
+
+If no supported audio player is found, the animation still runs.
+
+## Install with Python
+
+From this project directory:
+
+```bash
+python3 -m pip install .
+```
+
+Recommended for command-line tools:
+
+```bash
+python3 -m pip install pipx
+pipx install .
+```
+
+After installation, run:
+
+```bash
+tban-cat
+```
+
+## Assets
+
+Run `tban-cat` in a directory containing:
+
+```text
+cat.gif
+music.mp3
+```
+
+The GIF name is case-tolerant for common variants such as `cat.GIF`.
+The music file is optional.
+
+This repository also includes a cute Maltese puppy character animation:
+```text
+maltese.gif
+```
+
+## Usage
+
+```bash
+tban-cat
+tban-cat --gif maltese.gif
+tban-cat --fps
+tban-cat --scale 0.8
+tban-cat --margin-rows 1
+tban-cat --no-music
+tban-cat --music music.mp3
+```
+
+Sharper pixel-art rendering is the default. For smoother scaling:
+
+```bash
+tban-cat --smooth
+```
+
+To use half-block rendering:
+
+```bash
+tban-cat --half-block
+```
+
+Some terminals render half-block characters with visible horizontal seams. The
+default solid-block mode avoids that.
+
+## Development
+
+Run directly without installing:
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 main.py
+```
+
+Record a short video of the project source code being typed into the terminal:
+
+```bash
+python3 code_typewriter.py
+```
+
+Useful recording options:
+
+```bash
+python3 code_typewriter.py main.py gif_loader.py --speed 120
+python3 code_typewriter.py --max-lines 120 --hold 5
+python3 code_typewriter.py --plain --no-line-numbers
+```
+
+Build a standalone binary locally:
+
+```bash
+python3 -m pip install ".[build]"
+python3 -m PyInstaller --onefile --name tban-cat --add-data "cat.GIF:." --add-data "maltese.gif:." --add-data "music.mp3:." main.py
+```
+
+On Windows, use semicolons in `--add-data`:
+
+```powershell
+py -m pip install ".[build]"
+py -m PyInstaller --onefile --name tban-cat --add-data "cat.GIF;." --add-data "maltese.gif;." --add-data "music.mp3;." main.py
+```
+
+Check syntax:
+
+```bash
+python3 -m py_compile audio_player.py gif_loader.py renderer.py main.py code_typewriter.py
+```
+
+## License
+
+Apache License 2.0. See [LICENSE](LICENSE).
